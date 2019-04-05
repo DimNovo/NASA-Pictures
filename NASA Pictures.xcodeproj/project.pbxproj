@@ -12,6 +12,9 @@
 		74E6766D2253FF31000A11F8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 74E6766B2253FF31000A11F8 /* Main.storyboard */; };
 		74E6766F2253FF32000A11F8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 74E6766E2253FF32000A11F8 /* Assets.xcassets */; };
 		74E676722253FF32000A11F8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 74E676702253FF32000A11F8 /* LaunchScreen.storyboard */; };
+		74E6767E225441F4000A11F8 /* PhotoInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74E6767D225441F4000A11F8 /* PhotoInfo.swift */; };
+		74E6768022544BC3000A11F8 /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74E6767F22544BC3000A11F8 /* Networking.swift */; };
+		74E6768322544F44000A11F8 /* URL+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74E6768222544F44000A11F8 /* URL+Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +25,9 @@
 		74E6766E2253FF32000A11F8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		74E676712253FF32000A11F8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		74E676732253FF32000A11F8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		74E6767D225441F4000A11F8 /* PhotoInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoInfo.swift; sourceTree = "<group>"; };
+		74E6767F22544BC3000A11F8 /* Networking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
+		74E6768222544F44000A11F8 /* URL+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,14 +60,57 @@
 		74E676662253FF31000A11F8 /* NASA Pictures */ = {
 			isa = PBXGroup;
 			children = (
-				74E676672253FF31000A11F8 /* AppDelegate.swift */,
-				74E676692253FF31000A11F8 /* ViewController.swift */,
+				74E6768122544F16000A11F8 /* Extension */,
+				74E6767C2253FF93000A11F8 /* Model */,
+				74E676792253FF45000A11F8 /* View */,
+				74E6767A2253FF51000A11F8 /* Controller */,
+				74E6767B2253FF63000A11F8 /* Supporting Files */,
+			);
+			path = "NASA Pictures";
+			sourceTree = "<group>";
+		};
+		74E676792253FF45000A11F8 /* View */ = {
+			isa = PBXGroup;
+			children = (
 				74E6766B2253FF31000A11F8 /* Main.storyboard */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		74E6767A2253FF51000A11F8 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				74E6767F22544BC3000A11F8 /* Networking.swift */,
+				74E676692253FF31000A11F8 /* ViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		74E6767B2253FF63000A11F8 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				74E676672253FF31000A11F8 /* AppDelegate.swift */,
 				74E6766E2253FF32000A11F8 /* Assets.xcassets */,
 				74E676702253FF32000A11F8 /* LaunchScreen.storyboard */,
 				74E676732253FF32000A11F8 /* Info.plist */,
 			);
-			path = "NASA Pictures";
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		74E6767C2253FF93000A11F8 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				74E6767D225441F4000A11F8 /* PhotoInfo.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		74E6768122544F16000A11F8 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				74E6768222544F44000A11F8 /* URL+Extension.swift */,
+			);
+			path = Extension;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -135,8 +184,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				74E6767E225441F4000A11F8 /* PhotoInfo.swift in Sources */,
 				74E6766A2253FF31000A11F8 /* ViewController.swift in Sources */,
 				74E676682253FF31000A11F8 /* AppDelegate.swift in Sources */,
+				74E6768322544F44000A11F8 /* URL+Extension.swift in Sources */,
+				74E6768022544BC3000A11F8 /* Networking.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -284,7 +336,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3LF677RTA3;
-				INFOPLIST_FILE = "NASA Pictures/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/NASA Pictures/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -302,7 +354,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3LF677RTA3;
-				INFOPLIST_FILE = "NASA Pictures/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/NASA Pictures/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
