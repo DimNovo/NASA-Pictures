@@ -153,10 +153,7 @@ class ViewController: UIViewController
         
         Networking.shared.fetchImage(url: photoInfo?.url) { image in
             
-            OperationQueue.main.addOperation
-                {
-                    self.imageView.image = image
-            }
+            OperationQueue.main.addOperation { self.imageView.image = image }
         }
         DispatchQueue.main.async
             {
