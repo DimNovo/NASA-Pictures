@@ -10,13 +10,15 @@ import UIKit
 
 class ViewController: UIViewController
 {
-    let shapeLayer = CAShapeLayer()
+    var shapeLayer: CAShapeLayer!
+    var pulsatingLayer: CAShapeLayer!
     let percentageLabel: UILabel =
     {
         let label = UILabel()
-        label.text = "Start"
+        label.text = "...%"
         label.textAlignment = .center
-        label.font = UIFont.boldSystemFont(ofSize: 32)
+        label.font = UIFont.boldSystemFont(ofSize: 26)
+        label.textColor = .white
         return label
     }()
     
@@ -29,6 +31,7 @@ class ViewController: UIViewController
             print(#function, "Out of range!")
         }
     }
+    
     var photoInfo: PhotoInfo?
     {
         didSet
@@ -36,47 +39,42 @@ class ViewController: UIViewController
             updateUI()
         }
     }
+    
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var descriptionTextView: UITextView!
     @IBOutlet weak var copyrightLabel: UILabel!
     
+    private func setupNotificationObservers()
+    {
+        NotificationCenter.default.addObserver(self, selector: #selector(handleEnterForground), name: UIApplication.willEnterForegroundNotification, object: nil)
+    }
+    
+    @objc private func handleEnterForground() { animatePulsatingLayer() }
+    
+    private func createCircleShapeLayer(strokeColor: UIColor, fillColor: UIColor) -> CAShapeLayer
+    {
+        let circularPath = UIBezierPath(arcCenter: .zero, radius: 50, startAngle: 0, endAngle: 2 * CGFloat.pi, clockwise: true)
+        let layer = CAShapeLayer()
+        layer.path = circularPath.cgPath
+        layer.strokeColor = strokeColor.cgColor
+        layer.lineWidth = 8
+        layer.fillColor = fillColor.cgColor
+        layer.lineCap = CAShapeLayerLineCap.round
+        layer.position = self.view.center
+        return layer
+    }
+    
     override func viewDidLoad()
     {
         super.viewDidLoad()
         
-        view.addSubview(percentageLabel)
-        percentageLabel.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
-        percentageLabel.center = view.center
-        
         Networking.shared.setSessionDelegate(self)
         
-//        let center = view.center
-        let trackLayer = CAShapeLayer()
+        setupNotificationObservers()
+        setupCircleLayers()
+        setupLabelsAndTextView()
         
-        let circularPath = UIBezierPath(arcCenter: .zero, radius: 100, startAngle: 0, endAngle: 2 * CGFloat.pi, clockwise: true)
-        
-        trackLayer.path = circularPath.cgPath
-        trackLayer.strokeColor = UIColor.lightGray.cgColor
-        trackLayer.lineWidth = 10
-        trackLayer.fillColor = UIColor.clear.cgColor
-        trackLayer.lineCap = CAShapeLayerLineCap.round
-        trackLayer.position = view.center
-        
-        view.layer.addSublayer(trackLayer)
-        
-        shapeLayer.path = circularPath.cgPath
-        shapeLayer.strokeColor = UIColor.red.cgColor
-        shapeLayer.lineWidth = 10
-        shapeLayer.fillColor = UIColor.clear.cgColor
-        shapeLayer.lineCap = CAShapeLayerLineCap.round
-        shapeLayer.position = view.center
-        
-        shapeLayer.transform = CATransform3DMakeRotation(-CGFloat.pi / 2, 0, 0, 1)
-        shapeLayer.strokeEnd = 0
-        
-        view.layer.addSublayer(shapeLayer)
-
         let leftSwipe = UISwipeGestureRecognizer(target: self, action: #selector(swipesAction(sender:)))
         leftSwipe.direction = .left
         let rightSwipe = UISwipeGestureRecognizer(target: self, action: #selector(swipesAction(sender:)))
@@ -84,31 +82,55 @@ class ViewController: UIViewController
         
         view.addGestureRecognizer(leftSwipe)
         view.addGestureRecognizer(rightSwipe)
+        view.backgroundColor = UIColor.backgroundColor
         
-        descriptionTextView.isEditable = false
         Networking.shared.fetchPhotoInfo(date: Date(timeIntervalSinceNow: interval)) { self.photoInfo = $0 }
+    }
+    
+    private func setupLabelsAndTextView()
+    {
+        descriptionTextView.isEditable = false
+        view.addSubview(percentageLabel)
+        percentageLabel.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
+        percentageLabel.center = self.view.center
+        titleLabel.textColor = #colorLiteral(red: 0, green: 0.9914394021, blue: 1, alpha: 1)
+        descriptionTextView.backgroundColor = .backgroundColor
+        descriptionTextView.textColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+        copyrightLabel.textColor = #colorLiteral(red: 0, green: 0.9914394021, blue: 1, alpha: 1)
+    }
+    
+    private func setupCircleLayers()
+    {
+        pulsatingLayer = createCircleShapeLayer(strokeColor: .clear, fillColor: UIColor.pulsatingFillColor)
+        view.layer.addSublayer(pulsatingLayer)
+        let trackLayer = createCircleShapeLayer(strokeColor: .trackStrokeColor, fillColor: .backgroundColor)
+        view.layer.addSublayer(trackLayer)
+        animatePulsatingLayer()
+        shapeLayer = createCircleShapeLayer(strokeColor: .outlineStrokeColor, fillColor: .clear)
+        shapeLayer.transform = CATransform3DMakeRotation(-CGFloat.pi / 2, 0, 0, 1)
+        shapeLayer.strokeEnd = 0
+        view.layer.addSublayer(shapeLayer)
+    }
+    
+    private func animatePulsatingLayer()
+    {
+        let animation = CABasicAnimation(keyPath: "transform.scale")
+        animation.toValue = 1.3
+        animation.duration = 0.8
+        animation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeOut)
+        animation.autoreverses = true
+        animation.repeatCount = Float.infinity
+        pulsatingLayer.add(animation, forKey: "pulsing")
     }
     
     private func beginDownloadFile()
     {
-//        shapeLayer.strokeEnd = 0
-        
+        print(#function, "start to download file...")
         guard let urlSession = Networking.shared.session else { return }
         guard let url = photoInfo?.url else { return }
         let downloadTask = urlSession.downloadTask(with: url)
         downloadTask.resume()
     }
-    
-//    fileprivate func animateCircle()
-//    {
-//        let basicAnimation = CABasicAnimation(keyPath: "strokeEnd")
-//        basicAnimation.toValue = 1
-//        basicAnimation.duration = 2
-//        basicAnimation.fillMode = CAMediaTimingFillMode.forwards
-//        basicAnimation.isRemovedOnCompletion = false
-//
-//        shapeLayer.add(basicAnimation, forKey: "urSoBasic")
-//    }
     
     @objc private func swipesAction(sender: UISwipeGestureRecognizer)
     {
@@ -127,8 +149,8 @@ class ViewController: UIViewController
     
     func updateUI()
     {
-        print("Attempting to animate stroke")
         beginDownloadFile()
+        
         Networking.shared.fetchImage(url: photoInfo?.url) { image in
             
             OperationQueue.main.addOperation
@@ -139,7 +161,7 @@ class ViewController: UIViewController
         DispatchQueue.main.async
             {
                 self.titleLabel.text = self.photoInfo?.title
-                self.copyrightLabel.text = self.photoInfo?.copyright
+                self.copyrightLabel.text = "\(self.photoInfo?.copyright ?? "") ©"
                 self.descriptionTextView.text = self.photoInfo?.description
         }
     }
@@ -149,7 +171,7 @@ extension ViewController: URLSessionDownloadDelegate
 {
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL)
     {
-        print("finished download file!")
+        print(#function, "finished download file!")
     }
     
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didWriteData bytesWritten: Int64, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64)
@@ -160,9 +182,9 @@ extension ViewController: URLSessionDownloadDelegate
             {
                 self.percentageLabel.text = "\(Int(persentage * 100))%"
                 self.shapeLayer.strokeEnd = persentage
+                
+                if persentage < 0.0 {  self.percentageLabel.text = "...%" }
         }
-        
         print(persentage)
     }
-    
 }

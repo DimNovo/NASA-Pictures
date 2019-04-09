@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		74900069225C574B0067D233 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74900068225C574B0067D233 /* UIColor+Extension.swift */; };
 		74E676682253FF31000A11F8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74E676672253FF31000A11F8 /* AppDelegate.swift */; };
 		74E6766A2253FF31000A11F8 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74E676692253FF31000A11F8 /* ViewController.swift */; };
 		74E6766D2253FF31000A11F8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 74E6766B2253FF31000A11F8 /* Main.storyboard */; };
@@ -18,6 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		74900068225C574B0067D233 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		74E676642253FF31000A11F8 /* NASA Pictures.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "NASA Pictures.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		74E676672253FF31000A11F8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		74E676692253FF31000A11F8 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -109,6 +111,7 @@
 			isa = PBXGroup;
 			children = (
 				74E6768222544F44000A11F8 /* URL+Extension.swift */,
+				74900068225C574B0067D233 /* UIColor+Extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -187,6 +190,7 @@
 				74E6767E225441F4000A11F8 /* PhotoInfo.swift in Sources */,
 				74E6766A2253FF31000A11F8 /* ViewController.swift in Sources */,
 				74E676682253FF31000A11F8 /* AppDelegate.swift in Sources */,
+				74900069225C574B0067D233 /* UIColor+Extension.swift in Sources */,
 				74E6768322544F44000A11F8 /* URL+Extension.swift in Sources */,
 				74E6768022544BC3000A11F8 /* Networking.swift in Sources */,
 			);
