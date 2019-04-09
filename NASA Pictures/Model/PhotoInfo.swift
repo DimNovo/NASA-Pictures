@@ -15,6 +15,7 @@ struct PhotoInfo: Codable
     var url: URL
     var copyright: String?
     enum CodingKeys: String, CodingKey
+        
     {
         case title
         case description = "explanation"
@@ -32,23 +33,3 @@ struct PhotoInfo: Codable
         copyright = try? valueContainer.decode(String.self, forKey: CodingKeys.copyright)
     }
 }
-
-//extension PhotoInfo: Comparable
-//{
-//    static func < (lhs: PhotoInfo, rhs: PhotoInfo) -> Bool
-//    {
-//        return lhs.date < rhs.date
-//    }
-//    static func <= (lhs: PhotoInfo, rhs: PhotoInfo) -> Bool
-//    {
-//        return lhs.date <= rhs.date
-//    }
-//    static func >= (lhs: PhotoInfo, rhs: PhotoInfo) -> Bool
-//    {
-//        return lhs.date >= rhs.date
-//    }
-//    static func > (lhs: PhotoInfo, rhs: PhotoInfo) -> Bool
-//    {
-//        return lhs.date > rhs.date
-//    }
-//}
