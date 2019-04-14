@@ -107,7 +107,7 @@ class ViewController: UIViewController
         view.layer.addSublayer(trackLayer)
         animatePulsatingLayer()
         shapeLayer = createCircleShapeLayer(strokeColor: .outlineStrokeColor, fillColor: .clear)
-        shapeLayer.transform = CATransform3DMakeRotation(-CGFloat.pi / 2, 0, 0, 1)
+        shapeLayer.transform = CATransform3DMakeRotation(-CGFloat.pi / 2, 0, 0, 5)
         shapeLayer.strokeEnd = 0
         view.layer.addSublayer(shapeLayer)
     }
@@ -180,7 +180,7 @@ extension ViewController: URLSessionDownloadDelegate
                 self.percentageLabel.text = "\(Int(persentage * 100))%"
                 self.shapeLayer.strokeEnd = persentage
                 
-                if persentage < 0.0 {  self.percentageLabel.text = "...%" }
+                if persentage < 0.0 { self.percentageLabel.text = "...%" }
         }
         print(persentage)
     }
