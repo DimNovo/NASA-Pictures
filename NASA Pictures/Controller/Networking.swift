@@ -18,7 +18,7 @@ class Networking
     private init() {}
     
     let baseURL = URL(string: "https://api.nasa.gov/planetary/apod")!
-    var query = ["api_key": "enter_your_key", "date": "2019-04-03"]
+    var query = ["api_key": "put_here_your_key", "date": "2019-04-03"]
     
     func fetchPhotoInfo(date: Date, completion: @escaping (PhotoInfo?) -> Void)
     {

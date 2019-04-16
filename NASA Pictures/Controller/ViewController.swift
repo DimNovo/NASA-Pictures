@@ -29,7 +29,6 @@ class ViewController: UIViewController
             guard self.interval > 0.0 else { return }
             self.interval -= 86400
             print(#function, "Out of range!")
-            updateUI()
         }
     }
     
@@ -37,6 +36,7 @@ class ViewController: UIViewController
     {
         didSet
         {
+            guard self.photoInfo != oldValue else { return }
             updateUI()
         }
     }

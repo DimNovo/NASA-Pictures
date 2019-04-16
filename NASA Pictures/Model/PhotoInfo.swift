@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct PhotoInfo: Codable
+struct PhotoInfo: Codable, Equatable
 {
     var title: String
     var description: String
