@@ -17,7 +17,7 @@ class ViewController: UIViewController
         let label = UILabel()
         label.text = "...%"
         label.textAlignment = .center
-        label.font = UIFont.boldSystemFont(ofSize: 26)
+        label.font = UIFont.boldSystemFont(ofSize: 30)
         label.textColor = .white
         return label
     }()
@@ -29,6 +29,7 @@ class ViewController: UIViewController
             guard self.interval > 0.0 else { return }
             self.interval -= 86400
             print(#function, "Out of range!")
+            updateUI()
         }
     }
     
@@ -73,7 +74,8 @@ class ViewController: UIViewController
         
         setupNotificationObservers()
         setupCircleLayers()
-        setupLabelsAndTextView()
+        setupAnimationLabel()
+        setupTextViewAndLabels()
         
         let leftSwipe = UISwipeGestureRecognizer(target: self, action: #selector(swipesAction(sender:)))
         leftSwipe.direction = .left
@@ -87,16 +89,21 @@ class ViewController: UIViewController
         Networking.shared.fetchPhotoInfo(date: Date(timeIntervalSinceNow: interval)) { self.photoInfo = $0 }
     }
     
-    private func setupLabelsAndTextView()
+    private func setupTextViewAndLabels()
     {
         descriptionTextView.isEditable = false
-        view.addSubview(percentageLabel)
-        percentageLabel.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
-        percentageLabel.center = self.view.center
         titleLabel.textColor = #colorLiteral(red: 0, green: 0.9914394021, blue: 1, alpha: 1)
         descriptionTextView.backgroundColor = .backgroundColor
         descriptionTextView.textColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
         copyrightLabel.textColor = #colorLiteral(red: 0, green: 0.9914394021, blue: 1, alpha: 1)
+    }
+    
+    private func setupAnimationLabel()
+    {
+        view.addSubview(percentageLabel)
+        percentageLabel.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
+        percentageLabel.center = self.view.center
+        
     }
     
     private func setupCircleLayers()
@@ -126,6 +133,7 @@ class ViewController: UIViewController
     private func beginDownloadFile()
     {
         print(#function, "start to download file...")
+        
         guard let urlSession = Networking.shared.session else { return }
         guard let url = photoInfo?.url else { return }
         let downloadTask = urlSession.downloadTask(with: url)
@@ -142,7 +150,8 @@ class ViewController: UIViewController
             Networking.shared.fetchPhotoInfo(date: Date(timeIntervalSinceNow: interval)) { self.photoInfo = $0 }
         case .right:
             interval -= 86400
-            Networking.shared.fetchPhotoInfo(date: Date(timeIntervalSinceNow: interval)) { self.photoInfo = $0 }        default:
+            Networking.shared.fetchPhotoInfo(date: Date(timeIntervalSinceNow: interval)) { self.photoInfo = $0 }
+        default:
             break
         }
     }
@@ -157,9 +166,9 @@ class ViewController: UIViewController
         }
         DispatchQueue.main.async
             {
-                self.titleLabel.text = self.photoInfo?.title
-                self.copyrightLabel.text = "\(self.photoInfo?.copyright ?? "") ©"
-                self.descriptionTextView.text = self.photoInfo?.description
+            self.titleLabel.text = self.photoInfo?.title
+            self.copyrightLabel.text = "\(self.photoInfo?.copyright ?? "") ©"
+            self.descriptionTextView.text = self.photoInfo?.description
         }
     }
 }
@@ -168,6 +177,8 @@ extension ViewController: URLSessionDownloadDelegate
 {
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL)
     {
+        
+        
         print(#function, "finished download file!")
     }
     
@@ -179,6 +190,7 @@ extension ViewController: URLSessionDownloadDelegate
             {
                 self.percentageLabel.text = "\(Int(persentage * 100))%"
                 self.shapeLayer.strokeEnd = persentage
+                self.percentageLabel.transform = CGAffineTransform(scaleX: persentage, y: persentage)
                 
                 if persentage < 0.0 { self.percentageLabel.text = "...%" }
         }
